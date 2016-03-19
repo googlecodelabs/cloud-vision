@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>NodeJs and Cloud Vision API</title>
+
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="script.js"></script>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/">Google Cloud Vision</a>
+        </div>
+
+        <p class="navbar-text navbar-right">
+          {?profile}
+            {?profile.image}
+              <img src="{profile.image.url}" width="24" class="img-circle">
+            {/profile.image}
+            <span>{profile.displayName} &nbsp;<a href="{logout}">(logout)</a></span>
+          {:else}
+            <a href="{login}">Login</a>
+          {/profile}
+        </p>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="content">
+        <h3>Google Cloud Vision</h3>
+
+        {?profile}
+          <form action="/" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+              <label for="image">Image</label>
+              <input type="file" name="image" id="image" class="form-control">
+            </div>
+
+            {?featureTypes}
+              <div class="form-group">
+                <label for="imageType">Type of image feature:</label>
+                <select class="form-control" name="imageType">
+                  {#featureTypes}
+                    <option>{.}</option>
+                  {/featureTypes}
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="maxResults">Max results:</label>
+                <select class="form-control" name="maxResults">
+                   <option>1</option>
+                   <option>2</option>
+                   <option>3</option>
+                   <option>4</option>
+                   <option>5</option>
+                   <option>6</option>
+                   <option>7</option>
+                   <option>8</option>
+                   <option>9</option>
+                   <option>10</option>
+                </select>
+              </div>
+            {/featureTypes}
+            <div class="form-group">
+              <button type="submit" class="btn btn-success">Submit</button>
+            </div>  
+          </form>
+
+          {?vision}
+            {#vision}
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h3 class="panel-title">Output</h3>
+                </div>
+                <div id="panel-body" class="panel-body">
+                  {?.prettyprint}
+                    <pre class="prettyprint">{.prettyprint}</pre>
+                  {/.prettyprint}
+                  <canvas id="panel-canvas" class="canvas"></canvas>
+                  <script>
+                    initCanvas('{.imageUrl}', '{.response|s}');
+                  </script>
+                </div>
+              </div>
+            {/vision}
+          {/vision}
+
+          {?error}
+            <div class="alert alert-danger" role="alert">{error}</div>
+          {/error}
+        {:else}
+          <div class="alert alert-info">
+            Please <strong> <a href="{login}">login</a> </strong> to continue
+          </div>
+        {/profile}
+      </div>
+    </div>
+
+    <script src="//code.jquery.com/jquery-2.2.0.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script src="//cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+  </body>
+</html>
